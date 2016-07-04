@@ -11,4 +11,8 @@ public interface Resource
 
     InputStream getInputStream() throws FileNotFoundException;
 
+    boolean exists();
+
+
+    // TODO: 2016/7/5 其他方法
 }
