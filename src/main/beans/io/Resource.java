@@ -1,5 +1,6 @@
 package main.beans.io;
 
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 /**
@@ -8,6 +9,6 @@ import java.io.InputStream;
 public interface Resource
 {
 
-    InputStream getInputStream(String location);
+    InputStream getInputStream() throws FileNotFoundException;
 
 }
