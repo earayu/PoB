@@ -9,10 +9,8 @@ import java.io.InputStream;
 /**
  * Created by earayu on 2016/7/4.
  */
-public abstract class ClassPathResource extends AbstractResource
+public class ClassPathResource extends AbstractResource
 {
-
-    private final File file;
 
     public ClassPathResource(File file)
     {
@@ -21,7 +19,12 @@ public abstract class ClassPathResource extends AbstractResource
 
     public InputStream getInputStream() throws FileNotFoundException
     {
-        return new FileInputStream(this.file);
+        return new FileInputStream(file);
+    }
+
+    public boolean exists()
+    {
+        return this.file!=null;
     }
 
 }

@@ -1,5 +1,6 @@
 package main.beans.io;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
@@ -8,13 +9,7 @@ import java.io.InputStream;
  */
 public abstract class AbstractResource implements Resource
 {
-    public InputStream getInputStream() throws FileNotFoundException
-    {
-        return null;
-    }
+    protected File file;
 
-    public boolean exists()
-    {
-        return false;
-    }
+
 }
