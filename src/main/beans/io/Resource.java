@@ -13,6 +13,5 @@ public interface Resource
 
     boolean exists();
 
-
     // TODO: 2016/7/5 其他方法
 }
