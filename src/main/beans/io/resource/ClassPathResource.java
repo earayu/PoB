@@ -21,6 +21,16 @@ public class ClassPathResource extends AbstractResource
 
     public InputStream getInputStream()
     {
+        synchronized(this) {
+            if (this.inputStream == null) {
+                createInputStream();
+            }
+        }
+        return this.inputStream;
+    }
+
+    private void createInputStream()
+    {
         InputStream inputStream;
         try
         {
@@ -29,7 +39,7 @@ public class ClassPathResource extends AbstractResource
         {
             throw new main.exceptions.FileNotFoundException();
         }
-        return inputStream;
+        this.inputStream = inputStream;
     }
 
     public String getContentAsString()
@@ -49,7 +59,7 @@ public class ClassPathResource extends AbstractResource
             throw new main.exceptions.IOException("found an exception while reading \"" + url + "\"");
         }
         stringBuffer.trimToSize();
-        return stringBuffer.toString();
+        return stringBuffer.toString().trim();
     }
 
 

@@ -1,5 +1,10 @@
-aaaaaaaaaaaaaaa
-sdafaslfskafj;<kdsjaf>
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
 
-    fsdal;sfd;s
-</kdsjaf>
+    <bean id="Cat" class="main.Cat">
+        <property name="name" value="tom"></property>
+    </bean>
+
+    <bean id = "Dog" class = "main.Dog"></bean>
+
+</beans>

@@ -1,5 +1,13 @@
 package main.beans.io;
 
+import main.Cat;
+import main.beans.factory.BeanReader.XmlClassPathBeanDefinitionReader;
+import main.beans.factory.applicationContext.ApplicationContext;
+import main.beans.factory.applicationContext.XmlClassPathApplicationContext;
+import main.beans.factory.beanDefinition.BeanDefinition;
+import main.beans.factory.beanFactory.BeanFactory;
+import main.beans.factory.beanFactory.DefaultListableBeanFactory;
+import main.beans.factory.beanFactory.XmlClassPathBeanFactory;
 import main.beans.io.resource.Resource;
 import main.beans.io.resourceloader.ClassPathResourceLoader;
 import main.beans.io.resourceloader.ResourceLoader;
@@ -17,12 +25,36 @@ import java.net.URL;
 public class XmlClassPathResourceTest
 {
     @Test
+    public void testF()
+    {
+        BeanFactory beanFactory = new XmlClassPathBeanFactory("file.xml");
+
+        Cat cat = beanFactory.getBean("Cat", Cat.class);
+        Cat cat2 = beanFactory.getBean("Cat", Cat.class);
+
+        System.out.println(cat);
+        System.out.println(cat2);
+
+    }
+
+    @Test
+    public void testread()
+    {
+        ResourceLoader resourceLoader = new ClassPathResourceLoader("file.xml");
+        new XmlClassPathBeanDefinitionReader().loadBeanDefinitions(resourceLoader.getResource());
+
+
+
+    }
+
+    @Test
     public void test() throws IOException
     {
         ResourceLoader resourceLoader = new ClassPathResourceLoader("file.xml");
         Resource resource = resourceLoader.getResource();
 
         System.out.println(resource.getContentAsString());
+
     }
 
     @org.junit.Test

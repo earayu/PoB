@@ -19,5 +19,4 @@ public interface Resource
 
     URL getURL();
 
-    // TODO: 2016/7/5 其他方法
 }

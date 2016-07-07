@@ -1,6 +1,7 @@
 package main.beans.io.resource;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 
 /**
@@ -13,6 +14,8 @@ public abstract class AbstractResource implements Resource
     protected String location;
 
     protected URL url;
+
+    protected InputStream inputStream;
 
     public File getFile()
     {
