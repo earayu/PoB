@@ -5,13 +5,16 @@ package main;
  */
 public class Cat {
 
-    public String name;
+    private String name;
+
+    private String brand;
 
     @Override
     public String toString()
     {
         return "Cat{" +
                 "name='" + name + '\'' +
+                ", brand='" + brand + '\'' +
                 '}';
     }
 }

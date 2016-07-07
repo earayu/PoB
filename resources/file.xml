@@ -3,6 +3,7 @@
 
     <bean id="Cat" class="main.Cat">
         <property name="name" value="tom"></property>
+        <property name="brand" value="aaa"></property>
     </bean>
 
     <bean id = "Dog" class = "main.Dog">

@@ -5,7 +5,6 @@ import main.beans.factory.beanRegistry.BeanRegistry;
 
 import java.lang.reflect.Field;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -18,7 +17,6 @@ public class DefaultListableBeanFactory implements BeanFactory, BeanRegistry
 
     protected Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<String, BeanDefinition>(16);
 
-    protected Set<BeanDefinition> beanDefinitionSet;
 
 
     public Object getBean(String beanName) {
@@ -78,7 +76,7 @@ public class DefaultListableBeanFactory implements BeanFactory, BeanRegistry
 
     private <T> void setProperties(Object bean, String beanName, Class<T> clazz)
     {
-        Field[] fields = clazz.getFields();
+        Field[] fields = clazz.getDeclaredFields();
 
         for(Field field:fields)
         {

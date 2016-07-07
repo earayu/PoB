@@ -56,9 +56,6 @@ public class XmlClassPathBeanDefinitionReader extends AbstractBeanDefinitionRead
         return document;
     }
 
-
-
-
     private List<BeanDefinition> getBeanDefinitions(Document document)
     {
         Element root = document.getRootElement();

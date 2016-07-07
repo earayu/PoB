@@ -1,9 +1,6 @@
 package main.beans.factory.BeanReader;
 
-import main.beans.factory.beanDefinition.BeanDefinition;
 import main.beans.io.resource.Resource;
-
-import java.util.Set;
 
 /**
  * Created by earayu on 2016/7/7.
@@ -21,5 +18,4 @@ public interface BeanDefinitionReader
 
     void loadBeanDefinitions(String strRes);
 
-    Set<BeanDefinition> getBeanDefinitions();
 }

@@ -28,9 +28,8 @@ public class XmlClassPathResourceTest
         BeanFactory beanFactory = new XmlClassPathBeanFactory("file.xml");
 
         Cat cat = beanFactory.getBean("Cat", Cat.class);
-        Cat cat2 = beanFactory.getBean("Cat", Cat.class);
 
-        System.out.println(cat==cat2);
+        System.out.println(cat);
 
     }
 
