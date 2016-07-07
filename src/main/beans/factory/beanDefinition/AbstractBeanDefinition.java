@@ -1,8 +1,5 @@
 package main.beans.factory.beanDefinition;
 
-import java.util.HashMap;
-import java.util.Set;
-
 /**
  * Created by Administrator on 2016/7/7.
  */
@@ -21,6 +18,18 @@ public class AbstractBeanDefinition implements BeanDefinition{
     protected String beanClassName;
 
     protected PropertyValues propertyValues;
+
+    protected String lifyCycle;
+
+    public String getLifyCycle()
+    {
+        return lifyCycle;
+    }
+
+    public void setLifyCycle(String lifyCycle)
+    {
+        this.lifyCycle = lifyCycle;
+    }
 
     public PropertyValues getPropertyValues() {
         return propertyValues;
@@ -79,7 +88,8 @@ public class AbstractBeanDefinition implements BeanDefinition{
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "AbstractBeanDefinition{" +
                 "bean=" + bean +
                 ", beanId='" + beanId + '\'' +
@@ -87,6 +97,8 @@ public class AbstractBeanDefinition implements BeanDefinition{
                 ", beanAlias='" + beanAlias + '\'' +
                 ", beanClass=" + beanClass +
                 ", beanClassName='" + beanClassName + '\'' +
+                ", propertyValues=" + propertyValues +
+                ", lifyCycle='" + lifyCycle + '\'' +
                 '}';
     }
 }

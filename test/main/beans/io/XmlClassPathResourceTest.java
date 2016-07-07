@@ -2,21 +2,19 @@ package main.beans.io;
 
 import main.Cat;
 import main.beans.factory.BeanReader.XmlClassPathBeanDefinitionReader;
-import main.beans.factory.applicationContext.ApplicationContext;
-import main.beans.factory.applicationContext.XmlClassPathApplicationContext;
-import main.beans.factory.beanDefinition.BeanDefinition;
 import main.beans.factory.beanFactory.BeanFactory;
-import main.beans.factory.beanFactory.DefaultListableBeanFactory;
 import main.beans.factory.beanFactory.XmlClassPathBeanFactory;
 import main.beans.io.resource.Resource;
 import main.beans.io.resourceloader.ClassPathResourceLoader;
 import main.beans.io.resourceloader.ResourceLoader;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.lang.reflect.Field;
 import java.net.URL;
 
 /**
@@ -32,9 +30,31 @@ public class XmlClassPathResourceTest
         Cat cat = beanFactory.getBean("Cat", Cat.class);
         Cat cat2 = beanFactory.getBean("Cat", Cat.class);
 
-        System.out.println(cat);
-        System.out.println(cat2);
+        System.out.println(cat==cat2);
 
+    }
+
+    @Test
+    public void test2() throws NoSuchFieldException, IllegalAccessException
+    {
+        Cat cat = new Cat();
+        Field field = Cat.class.getField("name");
+        field.setAccessible(true);
+        field.set(cat, "tom");
+        System.out.println(cat);
+    }
+
+    @Test
+    public void testxml() throws UnsupportedEncodingException, DocumentException
+    {
+        ResourceLoader resourceLoader = new ClassPathResourceLoader("file.xml");
+        String strRes = resourceLoader.getResource().getContentAsString();
+        String xmlString = strRes.substring(strRes.indexOf("<?xml"));
+        SAXReader saxReader = new SAXReader();
+        Document document = saxReader.read(new ByteArrayInputStream(xmlString.getBytes("UTF-8")));
+
+        Element root = document.getRootElement();
+        System.out.println(root.element("bean").element("property").attributeValue("name"));
     }
 
     @Test

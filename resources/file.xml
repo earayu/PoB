@@ -5,6 +5,8 @@
         <property name="name" value="tom"></property>
     </bean>
 
-    <bean id = "Dog" class = "main.Dog"></bean>
+    <bean id = "Dog" class = "main.Dog">
+        <property name="name" value="dog"></property>
+    </bean>
 
 </beans>

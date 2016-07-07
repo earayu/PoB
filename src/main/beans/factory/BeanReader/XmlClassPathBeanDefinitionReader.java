@@ -2,7 +2,7 @@ package main.beans.factory.BeanReader;
 
 import main.beans.factory.beanDefinition.AbstractBeanDefinition;
 import main.beans.factory.beanDefinition.BeanDefinition;
-import main.beans.factory.beanDefinition.PropertyValue;
+import main.beans.factory.beanDefinition.PropertyValues;
 import main.beans.io.resource.Resource;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -24,15 +24,21 @@ public class XmlClassPathBeanDefinitionReader extends AbstractBeanDefinitionRead
 
     protected Set<BeanDefinition> beanDefinitionSet = new HashSet<BeanDefinition>(16);
 
-
-
     public XmlClassPathBeanDefinitionReader(){}
 
+    public void loadBeanDefinitions(Resource resource)
+    {
+        loadBeanDefinitions(resource.getContentAsString());
+    }
 
     public void loadBeanDefinitions(String strRes){
         Document document = getDocument(strRes);
         List<BeanDefinition> beanDefinitionList = getBeanDefinitions(document);
         beanDefinitionSet.addAll(beanDefinitionList);
+    }
+
+    public Set<BeanDefinition> getBeanDefinitions() {
+        return beanDefinitionSet;
     }
 
     private Document getDocument(String strRes)
@@ -50,6 +56,9 @@ public class XmlClassPathBeanDefinitionReader extends AbstractBeanDefinitionRead
         return document;
     }
 
+
+
+
     private List<BeanDefinition> getBeanDefinitions(Document document)
     {
         Element root = document.getRootElement();
@@ -58,29 +67,31 @@ public class XmlClassPathBeanDefinitionReader extends AbstractBeanDefinitionRead
         List<BeanDefinition> beanDefinitionList = new ArrayList<BeanDefinition>();
         for(Element bean:beans) {
 
-            AbstractBeanDefinition beanDefinition = new AbstractBeanDefinition();
+            BeanDefinition beanDefinition = new AbstractBeanDefinition();
             beanDefinition.setBeanId(bean.attributeValue("id"));
             try {
                 beanDefinition.setBeanClass(Class.forName(bean.attributeValue("class")));
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
-            PropertyValue propertyValue = new PropertyValue();
 
-            propertyValue.setPropertyName(bean.element("property").attributeValue("name"));
-            propertyValue.setPropertyValue(bean.element("property").attributeValue("value"));
+            beanDefinition = parseProperties(bean, beanDefinition);
 
             beanDefinitionList.add(beanDefinition);
         }
         return beanDefinitionList;
     }
 
-
-    public Set<BeanDefinition> getBeanDefinitionSet() {
-        return beanDefinitionSet;
+    private BeanDefinition parseProperties(Element bean, BeanDefinition beanDefinition)
+    {
+        PropertyValues propertyValues = new PropertyValues();
+        List<Element> properties = bean.elements("property");
+        for(Element property:properties)
+        {
+            propertyValues.add(property.attributeValue("name"), property.attributeValue("value"));
+        }
+        beanDefinition.setPropertyValues(propertyValues);
+        return beanDefinition;
     }
 
-    public void setBeanDefinitionSet(Set<BeanDefinition> beanDefinitionSet) {
-        this.beanDefinitionSet = beanDefinitionSet;
-    }
 }

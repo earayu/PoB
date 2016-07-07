@@ -18,7 +18,8 @@ public class XmlClassPathBeanFactory extends DefaultListableBeanFactory {
     public XmlClassPathBeanFactory(String location)
     {
         setXmlClassPathBeanDefinitionReader(location);
-        registerAllBeanDefinitions(xmlClassPathBeanDefinitionReader.getBeanDefinitionSet());
+        registerAllBeanDefinitions(xmlClassPathBeanDefinitionReader.getBeanDefinitions());
+        beanDefinitionSet = xmlClassPathBeanDefinitionReader.getBeanDefinitions();
     }
 
     private void setXmlClassPathBeanDefinitionReader(String location)

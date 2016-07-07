@@ -5,6 +5,13 @@ package main.beans.factory.beanDefinition;
  */
 public class PropertyValue {
 
+    public PropertyValue(String name, Object value)
+    {
+
+    }
+
+    public PropertyValue(){}
+
     private String propertyName;
 
     private Object propertyValue;

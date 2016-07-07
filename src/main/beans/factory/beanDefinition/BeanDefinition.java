@@ -1,15 +1,13 @@
 package main.beans.factory.beanDefinition;
 
-import java.util.Set;
-
 /**
  * Created by Administrator on 2016/7/4.
  */
 public interface BeanDefinition {
 
-    public PropertyValues getPropertyValues();
+    PropertyValues getPropertyValues();
 
-    public void setPropertyValues(PropertyValues propertyValues);
+    void setPropertyValues(PropertyValues propertyValues);
 
     String getBeanClassName();
 
@@ -34,5 +32,9 @@ public interface BeanDefinition {
     Class getBeanClass();
 
     void setBeanClass(Class beanClass);
+
+    public String getLifyCycle();
+
+    public void setLifyCycle(String lifyCycle);
 
 }
