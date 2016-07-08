@@ -4,6 +4,8 @@ import main.beans.factory.beanDefinition.BeanDefinition;
 import main.beans.io.ResourceParser.ResourceParser;
 import main.beans.io.ResourceParser.XmlParser;
 import main.beans.io.resource.Resource;
+import main.beans.io.resourceloader.ClassPathResourceLoader;
+import main.beans.io.resourceloader.ResourceLoader;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,10 +18,19 @@ public class XmlClassPathBeanDefinitionReader extends AbstractBeanDefinitionRead
 
     protected Set<BeanDefinition> beanDefinitionSet = new HashSet<BeanDefinition>(16);
 
+    protected String location;
+
     protected Resource resource;
 
-    public XmlClassPathBeanDefinitionReader(Resource resource){
-        this.resource = resource;
+    public XmlClassPathBeanDefinitionReader(String location){
+        init(location);
+    }
+
+    private void init(String location)
+    {
+        this.location = location;
+        ResourceLoader resourceLoader = new ClassPathResourceLoader(location);
+        this.resource = resourceLoader.getResource();
         loadBeanDefinitions();
     }
 

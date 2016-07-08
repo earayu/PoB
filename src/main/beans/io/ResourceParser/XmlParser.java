@@ -11,8 +11,9 @@ import org.dom4j.io.SAXReader;
 
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Administrator on 2016/7/8.
@@ -25,48 +26,63 @@ public class XmlParser implements ResourceParser{
 
     public XmlParser(Resource resource)
     {
-        this.resource = resource;
+        init(resource);
     }
 
-    public List<BeanDefinition> getBeanDefinitions()
+    public Set<BeanDefinition> getBeanDefinitions()
     {
-        Document document = loadDocumentFromString(resource.getContentAsString());
-
         Element root = document.getRootElement();
         List<Element> beans = root.elements("bean");
 
-        List<BeanDefinition> beanDefinitionList = new ArrayList<BeanDefinition>();
+        Set<BeanDefinition> beanDefinitionList = new HashSet<BeanDefinition>();
         for(Element bean:beans) {
-
-            // TODO: 2016/7/8
-//            parseBean(bean);
-
-            BeanDefinition beanDefinition = new AbstractBeanDefinition();
-            beanDefinition.setBeanId(bean.attributeValue("id"));
-            try {
-                beanDefinition.setBeanClass(Class.forName(bean.attributeValue("class")));
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-
-            beanDefinition = parseProperties(bean, beanDefinition);
-
-            beanDefinitionList.add(beanDefinition);
+            beanDefinitionList.add(parseBean(bean));
         }
 
         return beanDefinitionList;
     }
 
+    private BeanDefinition parseBean(Element bean)
+    {
+        BeanDefinition beanDefinition = new AbstractBeanDefinition();
+        beanDefinition.setBeanId(bean.attributeValue("id"));
+        try {
+            beanDefinition.setBeanClass(Class.forName(bean.attributeValue("class")));
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
+        beanDefinition = parseProperties(bean, beanDefinition);
+        return beanDefinition;
+    }
 
+    private BeanDefinition parseProperties(Element bean, BeanDefinition beanDefinition)
+    {
+        PropertyValues propertyValues = new PropertyValues();
+        List<Element> properties = bean.elements("property");
+        for(Element property:properties)
+        {
+            propertyValues.add(property.attributeValue("name"), property.attributeValue("value"));
+        }
+        beanDefinition.setPropertyValues(propertyValues);
+        return beanDefinition;
+    }
 
     public Resource getResource() {
         return resource;
     }
 
+
     public void setResource(Resource resource) {
         this.resource = resource;
     }
+
+    private void init(Resource resource)
+    {
+        this.resource = resource;
+        this.document = loadDocumentFromString(resource.getContentAsString());
+    }
+
 
     private Document loadDocumentFromString(String strRes)
     {
@@ -82,19 +98,6 @@ public class XmlParser implements ResourceParser{
         }
         this.document = document;
         return document;
-    }
-
-
-    private BeanDefinition parseProperties(Element bean, BeanDefinition beanDefinition)
-    {
-        PropertyValues propertyValues = new PropertyValues();
-        List<Element> properties = bean.elements("property");
-        for(Element property:properties)
-        {
-            propertyValues.add(property.attributeValue("name"), property.attributeValue("value"));
-        }
-        beanDefinition.setPropertyValues(propertyValues);
-        return beanDefinition;
     }
 
 

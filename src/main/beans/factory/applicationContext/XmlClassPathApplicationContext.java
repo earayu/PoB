@@ -3,9 +3,6 @@ package main.beans.factory.applicationContext;
 import main.beans.factory.BeanReader.XmlClassPathBeanDefinitionReader;
 import main.beans.factory.beanDefinition.BeanDefinition;
 import main.beans.factory.beanFactory.DefaultListableBeanFactory;
-import main.beans.io.resource.Resource;
-import main.beans.io.resourceloader.ClassPathResourceLoader;
-import main.beans.io.resourceloader.ResourceLoader;
 
 import java.util.Set;
 
@@ -24,9 +21,7 @@ public class XmlClassPathApplicationContext extends DefaultListableBeanFactory i
 
     private void setXmlClassPathBeanDefinitionReader(String location)
     {
-        ResourceLoader resourceLoader = new ClassPathResourceLoader(location);
-        Resource resource = resourceLoader.getResource();
-        this.xmlClassPathBeanDefinitionReader = new XmlClassPathBeanDefinitionReader(resource);
+        this.xmlClassPathBeanDefinitionReader = new XmlClassPathBeanDefinitionReader(location);
     }
 
     private void registerAllBeanDefinitions(Set<BeanDefinition> beanDefinitionSet)

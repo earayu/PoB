@@ -1,9 +1,7 @@
 package main.beans.io;
 
 import main.Cat;
-import main.beans.factory.BeanReader.XmlClassPathBeanDefinitionReader;
 import main.beans.factory.applicationContext.ApplicationContext;
-import main.beans.factory.beanFactory.BeanFactory;
 import main.beans.factory.applicationContext.XmlClassPathApplicationContext;
 import main.beans.io.resource.Resource;
 import main.beans.io.resourceloader.ClassPathResourceLoader;
@@ -15,7 +13,6 @@ import org.dom4j.io.SAXReader;
 import org.junit.Test;
 
 import java.io.*;
-import java.lang.reflect.Field;
 import java.net.URL;
 
 /**
@@ -35,13 +32,9 @@ public class XmlClassPathResourceTest
     }
 
     @Test
-    public void test2() throws NoSuchFieldException, IllegalAccessException
+    public void test2() throws NoSuchFieldException, IllegalAccessException, InstantiationException
     {
-        Cat cat = new Cat();
-        Field field = Cat.class.getField("name");
-        field.setAccessible(true);
-        field.set(cat, "tom");
-        System.out.println(cat);
+        Cat cat = Cat.class.newInstance();
     }
 
     @Test
@@ -57,12 +50,7 @@ public class XmlClassPathResourceTest
         System.out.println(root.element("bean").element("property").attributeValue("name"));
     }
 
-    @Test
-    public void testread()
-    {
-        ResourceLoader resourceLoader = new ClassPathResourceLoader("file.xml");
-        new XmlClassPathBeanDefinitionReader(resourceLoader.getResource());
-    }
+
 
     @Test
     public void test() throws IOException
