@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public class XmlClassPathApplicationContext extends DefaultListableBeanFactory implements ApplicationContext {
 
-    private XmlClassPathBeanDefinitionReader xmlClassPathBeanDefinitionReader = new XmlClassPathBeanDefinitionReader();
+    private XmlClassPathBeanDefinitionReader xmlClassPathBeanDefinitionReader;
 
     public XmlClassPathApplicationContext(String location)
     {
@@ -26,8 +26,7 @@ public class XmlClassPathApplicationContext extends DefaultListableBeanFactory i
     {
         ResourceLoader resourceLoader = new ClassPathResourceLoader(location);
         Resource resource = resourceLoader.getResource();
-        this.xmlClassPathBeanDefinitionReader = new XmlClassPathBeanDefinitionReader();
-        this.xmlClassPathBeanDefinitionReader.loadBeanDefinitions(resource.getContentAsString());
+        this.xmlClassPathBeanDefinitionReader = new XmlClassPathBeanDefinitionReader(resource);
     }
 
     private void registerAllBeanDefinitions(Set<BeanDefinition> beanDefinitionSet)

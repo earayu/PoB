@@ -61,10 +61,7 @@ public class XmlClassPathResourceTest
     public void testread()
     {
         ResourceLoader resourceLoader = new ClassPathResourceLoader("file.xml");
-        new XmlClassPathBeanDefinitionReader().loadBeanDefinitions(resourceLoader.getResource());
-
-
-
+        new XmlClassPathBeanDefinitionReader(resourceLoader.getResource());
     }
 
     @Test

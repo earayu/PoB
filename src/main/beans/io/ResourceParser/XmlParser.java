@@ -1,11 +1,16 @@
-package main.beans.factory.BeanReader;
+package main.beans.io.ResourceParser;
 
 import main.beans.factory.beanDefinition.AbstractBeanDefinition;
 import main.beans.factory.beanDefinition.BeanDefinition;
 import main.beans.factory.beanDefinition.PropertyValues;
+import main.beans.io.resource.Resource;
 import org.dom4j.Document;
+import org.dom4j.DocumentException;
 import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 
+import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,41 +19,25 @@ import java.util.List;
  */
 public class XmlParser implements ResourceParser{
 
-    private XmlClassPathBeanDefinitionReader xmlClassPathBeanDefinitionReader;
-
     private Document document;
+
+    private Resource resource;
 
     public XmlParser(){}
 
-    public XmlParser(XmlClassPathBeanDefinitionReader xmlClassPathBeanDefinitionReader)
+    public XmlParser(Resource resource)
     {
-        this.xmlClassPathBeanDefinitionReader = xmlClassPathBeanDefinitionReader;
-    }
-
-    public Document getDocument() {
-        return document;
-    }
-
-    public void setDocument(Document document) {
-        this.document = document;
-    }
-
-    public XmlClassPathBeanDefinitionReader getXmlClassPathBeanDefinitionReader() {
-        return xmlClassPathBeanDefinitionReader;
-    }
-
-    public void setXmlClassPathBeanDefinitionReader(XmlClassPathBeanDefinitionReader xmlClassPathBeanDefinitionReader) {
-        this.xmlClassPathBeanDefinitionReader = xmlClassPathBeanDefinitionReader;
+        this.resource = resource;
     }
 
 
-
-
-    public List<BeanDefinition> getBeanDefinitions(Document document)
+    public List<BeanDefinition> getBeanDefinitions()
     {
+        Document document = loadDocumentFromString(resource.getContentAsString());
+
         Element root = document.getRootElement();
-
         List<Element> beans = root.elements("bean");
+
         List<BeanDefinition> beanDefinitionList = new ArrayList<BeanDefinition>();
         for(Element bean:beans) {
 
@@ -64,8 +53,45 @@ public class XmlParser implements ResourceParser{
 
             beanDefinitionList.add(beanDefinition);
         }
+
         return beanDefinitionList;
     }
+
+
+
+
+    public Resource getResource() {
+        return resource;
+    }
+
+    public void setResource(Resource resource) {
+        this.resource = resource;
+    }
+
+    public Document getDocument() {
+        return document;
+    }
+
+    public void setDocument(Document document) {
+        this.document = document;
+    }
+
+    private Document loadDocumentFromString(String strRes)
+    {
+        String xmlString = strRes.substring(strRes.indexOf("<?xml"));
+        SAXReader saxReader = new SAXReader();
+        Document document;
+        try {
+            document = saxReader.read(new ByteArrayInputStream(xmlString.getBytes("UTF-8")));
+        } catch (DocumentException e) {
+            throw new RuntimeException(e);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        this.document = document;
+        return document;
+    }
+
 
     private BeanDefinition parseProperties(Element bean, BeanDefinition beanDefinition)
     {
