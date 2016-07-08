@@ -23,13 +23,10 @@ public class XmlParser implements ResourceParser{
 
     private Resource resource;
 
-    public XmlParser(){}
-
     public XmlParser(Resource resource)
     {
         this.resource = resource;
     }
-
 
     public List<BeanDefinition> getBeanDefinitions()
     {
@@ -40,6 +37,9 @@ public class XmlParser implements ResourceParser{
 
         List<BeanDefinition> beanDefinitionList = new ArrayList<BeanDefinition>();
         for(Element bean:beans) {
+
+            // TODO: 2016/7/8
+//            parseBean(bean);
 
             BeanDefinition beanDefinition = new AbstractBeanDefinition();
             beanDefinition.setBeanId(bean.attributeValue("id"));
@@ -66,14 +66,6 @@ public class XmlParser implements ResourceParser{
 
     public void setResource(Resource resource) {
         this.resource = resource;
-    }
-
-    public Document getDocument() {
-        return document;
-    }
-
-    public void setDocument(Document document) {
-        this.document = document;
     }
 
     private Document loadDocumentFromString(String strRes)
@@ -104,6 +96,7 @@ public class XmlParser implements ResourceParser{
         beanDefinition.setPropertyValues(propertyValues);
         return beanDefinition;
     }
+
 
 
 }

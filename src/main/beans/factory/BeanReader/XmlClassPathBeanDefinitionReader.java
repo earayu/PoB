@@ -23,6 +23,14 @@ public class XmlClassPathBeanDefinitionReader extends AbstractBeanDefinitionRead
         loadBeanDefinitions();
     }
 
+    public Resource getResource() {
+        return resource;
+    }
+
+    public void setResource(Resource resource) {
+        this.resource = resource;
+    }
+
     private void loadBeanDefinitions()
     {
         ResourceParser resourceParser = new XmlParser(resource);
