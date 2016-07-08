@@ -2,6 +2,7 @@ package main.beans.factory.beanFactory;
 
 import main.beans.factory.beanDefinition.BeanDefinition;
 import main.beans.factory.beanRegistry.BeanRegistry;
+import main.beans.io.resource.Resource;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -16,7 +17,6 @@ public class DefaultListableBeanFactory implements BeanFactory, BeanRegistry
 {
 
     protected Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<String, BeanDefinition>(16);
-
 
 
     public Object getBean(String beanName) {

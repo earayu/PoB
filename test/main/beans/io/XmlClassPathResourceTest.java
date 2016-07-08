@@ -2,8 +2,9 @@ package main.beans.io;
 
 import main.Cat;
 import main.beans.factory.BeanReader.XmlClassPathBeanDefinitionReader;
+import main.beans.factory.applicationContext.ApplicationContext;
 import main.beans.factory.beanFactory.BeanFactory;
-import main.beans.factory.beanFactory.XmlClassPathBeanFactory;
+import main.beans.factory.applicationContext.XmlClassPathApplicationContext;
 import main.beans.io.resource.Resource;
 import main.beans.io.resourceloader.ClassPathResourceLoader;
 import main.beans.io.resourceloader.ResourceLoader;
@@ -25,9 +26,9 @@ public class XmlClassPathResourceTest
     @Test
     public void testF()
     {
-        BeanFactory beanFactory = new XmlClassPathBeanFactory("file.xml");
+        ApplicationContext applicationContext = new XmlClassPathApplicationContext("file.xml");
 
-        Cat cat = beanFactory.getBean("Cat", Cat.class);
+        Cat cat = applicationContext.getBean("Cat", Cat.class);
 
         System.out.println(cat);
 

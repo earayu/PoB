@@ -19,16 +19,16 @@ public class AbstractBeanDefinition implements BeanDefinition{
 
     protected PropertyValues propertyValues;
 
-    protected String lifyCycle;
+    protected String scope;
 
-    public String getLifyCycle()
+    public String getScope()
     {
-        return lifyCycle;
+        return scope;
     }
 
-    public void setLifyCycle(String lifyCycle)
+    public void setScope(String scope)
     {
-        this.lifyCycle = lifyCycle;
+        this.scope = scope;
     }
 
     public PropertyValues getPropertyValues() {
@@ -98,7 +98,7 @@ public class AbstractBeanDefinition implements BeanDefinition{
                 ", beanClass=" + beanClass +
                 ", beanClassName='" + beanClassName + '\'' +
                 ", propertyValues=" + propertyValues +
-                ", lifyCycle='" + lifyCycle + '\'' +
+                ", scope='" + scope + '\'' +
                 '}';
     }
 }

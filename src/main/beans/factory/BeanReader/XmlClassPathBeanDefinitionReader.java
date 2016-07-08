@@ -33,7 +33,10 @@ public class XmlClassPathBeanDefinitionReader extends AbstractBeanDefinitionRead
 
     public void loadBeanDefinitions(String strRes){
         Document document = getDocument(strRes);
-        List<BeanDefinition> beanDefinitionList = getBeanDefinitions(document);
+        XmlParser xmlParser = XmlParser.class.cast(getResourceParser());
+
+        List<BeanDefinition> beanDefinitionList = xmlParser.getBeanDefinitions(document);
+
         beanDefinitionSet.addAll(beanDefinitionList);
     }
 
@@ -56,39 +59,11 @@ public class XmlClassPathBeanDefinitionReader extends AbstractBeanDefinitionRead
         return document;
     }
 
-    private List<BeanDefinition> getBeanDefinitions(Document document)
+    private ResourceParser getResourceParser()
     {
-        Element root = document.getRootElement();
-
-        List<Element> beans = root.elements("bean");
-        List<BeanDefinition> beanDefinitionList = new ArrayList<BeanDefinition>();
-        for(Element bean:beans) {
-
-            BeanDefinition beanDefinition = new AbstractBeanDefinition();
-            beanDefinition.setBeanId(bean.attributeValue("id"));
-            try {
-                beanDefinition.setBeanClass(Class.forName(bean.attributeValue("class")));
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-
-            beanDefinition = parseProperties(bean, beanDefinition);
-
-            beanDefinitionList.add(beanDefinition);
-        }
-        return beanDefinitionList;
+        return new XmlParser(this);
     }
 
-    private BeanDefinition parseProperties(Element bean, BeanDefinition beanDefinition)
-    {
-        PropertyValues propertyValues = new PropertyValues();
-        List<Element> properties = bean.elements("property");
-        for(Element property:properties)
-        {
-            propertyValues.add(property.attributeValue("name"), property.attributeValue("value"));
-        }
-        beanDefinition.setPropertyValues(propertyValues);
-        return beanDefinition;
-    }
+
 
 }

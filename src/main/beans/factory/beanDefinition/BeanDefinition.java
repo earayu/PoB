@@ -33,8 +33,8 @@ public interface BeanDefinition {
 
     void setBeanClass(Class beanClass);
 
-    public String getLifyCycle();
+    String getScope();
 
-    public void setLifyCycle(String lifyCycle);
+    void setScope(String scope);
 
 }
