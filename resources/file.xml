@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <beans>
 
-    <bean id="Cat" class="main.Cat">
+    <bean id="Cat" class="main.Cat" scope="singleton" lazy-init="true">
         <property name="name" value="toma"></property>
         <property name="brand" value="aaa"></property>
     </bean>

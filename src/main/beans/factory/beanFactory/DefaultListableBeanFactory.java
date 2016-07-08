@@ -17,30 +17,45 @@ public class DefaultListableBeanFactory implements BeanFactory, BeanRegistry
 
     protected Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<String, BeanDefinition>(16);
 
+    private static final String SINGLETON = "singleton";
+    private static final String PROTOTYPE = "prototype";
+    private static final String LAZY_INIT_TRUE = "true";
+    private static final String LAZY_INIT_FALSE = "false";
+
 
     public Object getBean(String beanName) {
         BeanDefinition beanDefinition = beanDefinitionMap.get(beanName);
         checkNotNull(beanDefinition);
 
-        Object bean = beanDefinition.getBean();
+        Object bean = null;
+        if(beanDefinition.getScope().equals(SINGLETON))
+        {
+            bean = beanDefinition.getBean();
+        }
 
         return bean!=null?bean:createBean(beanDefinition);
     }
 
-    public <T> T getBean(String beanName, Class<T> clazz) {
-        BeanDefinition beanDefinition = beanDefinitionMap.get(beanName);
-        checkNotNull(beanDefinition);
+    //这里的参数beanName对应的实际上是BeanDefinition中的BeanId
+    public <T> T getBean(String beanId, Class<T> clazz) {
+
+        BeanDefinition beanDefinition = beanDefinitionMap.get(beanId);
+        Object bean = getBean(beanId);
 
         if(beanDefinition.getBeanClass()!=clazz)
             throw new RuntimeException("类型不匹配");
 
-        Object bean = beanDefinition.getBean();
-
         return bean!=null?clazz.cast(bean):clazz.cast(createBean(beanDefinition));
     }
 
-    public void registerBeanDefinitions(String beanName, BeanDefinition beanDefinition) {
-        beanDefinitionMap.put(beanName, beanDefinition);
+    public void registerBeanDefinitions(String beanId, BeanDefinition beanDefinition) {
+        // TODO: 2016/7/8
+        if(beanDefinition.getLazyInit().equals(LAZY_INIT_TRUE))
+        {
+            beanDefinition.setBean(createBean(beanDefinition));
+        }
+
+        beanDefinitionMap.put(beanId, beanDefinition);
     }
 
     private Object createBean(BeanDefinition beanDefinition)
@@ -82,28 +97,6 @@ public class DefaultListableBeanFactory implements BeanFactory, BeanRegistry
         }
     }
 
-    private <T> void setProperties(Object bean, String beanName, Class<T> clazz)
-    {
-        Field[] fields = clazz.getDeclaredFields();
-
-        for(Field field:fields)
-        {
-            field.setAccessible(true);
-            String fieldName = field.getName();
-            if(beanDefinitionMap.get(beanName).getPropertyValues().getPropertyNames().contains(fieldName))
-            {
-                Object fieldValue = beanDefinitionMap.get(beanName).getPropertyValues().getValue(fieldName);
-                try
-                {
-                    field.set(bean, fieldValue);
-                }
-                catch (IllegalAccessException e)
-                {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-    }
 
 
 }

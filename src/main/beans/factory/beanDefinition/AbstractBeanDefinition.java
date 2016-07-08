@@ -21,6 +21,18 @@ public class AbstractBeanDefinition implements BeanDefinition{
 
     protected String scope;
 
+    protected String lazyInit;
+
+    public String getLazyInit()
+    {
+        return lazyInit;
+    }
+
+    public void setLazyInit(String lazyInit)
+    {
+        this.lazyInit = lazyInit;
+    }
+
     public String getScope()
     {
         return scope;

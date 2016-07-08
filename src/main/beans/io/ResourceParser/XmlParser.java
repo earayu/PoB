@@ -17,8 +17,14 @@ import java.util.Set;
 
 /**
  * Created by Administrator on 2016/7/8.
+ * todo
+ * 1. Alias
+ * 2. ref
+ * 3. constructor
  */
 public class XmlParser implements ResourceParser{
+
+
 
     private Document document;
 
@@ -45,6 +51,14 @@ public class XmlParser implements ResourceParser{
     private BeanDefinition parseBean(Element bean)
     {
         BeanDefinition beanDefinition = new AbstractBeanDefinition();
+
+        beanDefinition = parseBeanAttributes(bean, beanDefinition);
+        beanDefinition = parseProperties(bean, beanDefinition);
+        return beanDefinition;
+    }
+
+    private BeanDefinition parseBeanAttributes(Element bean, BeanDefinition beanDefinition)
+    {
         beanDefinition.setBeanId(bean.attributeValue("id"));
         try {
             beanDefinition.setBeanClass(Class.forName(bean.attributeValue("class")));
@@ -52,7 +66,20 @@ public class XmlParser implements ResourceParser{
             throw new RuntimeException(e);
         }
 
-        beanDefinition = parseProperties(bean, beanDefinition);
+        String scope = bean.attributeValue("scope");
+        if(scope==null)
+            scope = "singleton";
+        if(!scope.equals("singleton") && !scope.equals("prototype"))
+            throw new RuntimeException("scope 的值必须为\"singleton\"或\"prototype\"");
+        beanDefinition.setScope(scope);
+
+        String lazyInit = bean.attributeValue("lazy-init");
+        if(lazyInit==null)
+            lazyInit = "false";
+        if(!lazyInit.equals("true") && !lazyInit.equals("false"))
+            throw new RuntimeException("lazy-init 的值必须为\"true\"或\"false\"");
+        beanDefinition.setLazyInit(lazyInit);
+
         return beanDefinition;
     }
 

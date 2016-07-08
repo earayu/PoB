@@ -21,20 +21,21 @@ import java.net.URL;
 public class XmlClassPathResourceTest
 {
     @Test
-    public void testF()
+    public void testApplicationContext()
     {
         ApplicationContext applicationContext = new XmlClassPathApplicationContext("file.xml");
 
-        Cat cat = applicationContext.getBean("Cat", Cat.class);
+        Cat cat = (Cat) applicationContext.getBean("Cat");
+        Cat cat2 = applicationContext.getBean("Cat", Cat.class);
 
         System.out.println(cat);
-
+        System.out.println(cat2);
     }
 
     @Test
     public void test2() throws NoSuchFieldException, IllegalAccessException, InstantiationException
     {
-        Cat cat = Cat.class.newInstance();
+
     }
 
     @Test

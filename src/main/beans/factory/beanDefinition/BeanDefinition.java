@@ -37,4 +37,8 @@ public interface BeanDefinition {
 
     void setScope(String scope);
 
+    public String getLazyInit();
+
+    public void setLazyInit(String lazyInit);
+
 }
