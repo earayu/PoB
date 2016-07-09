@@ -1,7 +1,6 @@
 package main.beans.io;
 
 import main.Cat;
-import main.Dog;
 import main.beans.factory.applicationContext.ApplicationContext;
 import main.beans.factory.applicationContext.XmlClassPathApplicationContext;
 import main.beans.io.resource.Resource;
@@ -25,17 +24,15 @@ public class XmlClassPathResourceTest
     public void testApplicationContext()
     {
         ApplicationContext applicationContext = new XmlClassPathApplicationContext("file.xml");
-
         Cat cat = (Cat) applicationContext.getBean("Cat");
-        Cat cat2 = applicationContext.getBean("Cat", Cat.class);
 
         System.out.println(cat);
-        System.out.println(cat2);
     }
 
     @Test
     public void test2() throws NoSuchFieldException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-
+        Integer integer = new Integer("12");
+        System.out.println(integer);
     }
 
     @Test
@@ -58,7 +55,6 @@ public class XmlClassPathResourceTest
     {
         ResourceLoader resourceLoader = new ClassPathResourceLoader("file.xml");
         Resource resource = resourceLoader.getResource();
-
         System.out.println(resource.getContentAsString());
 
     }

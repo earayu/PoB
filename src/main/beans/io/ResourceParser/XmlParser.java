@@ -12,6 +12,8 @@ import org.dom4j.io.SAXReader;
 
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -92,8 +94,14 @@ public class XmlParser implements ResourceParser{
         {
             String propertyName = property.attributeValue("name");
             Object propertyValue = property.attributeValue("value");
+            String type = property.attributeValue("type");
             if(propertyValue!=null) {
                 //直接赋值, TODO: 2016/7/9 应该要处理不同类型的值
+                if(type!=null)
+                {
+                    type = changeType(type);
+                    propertyValue = resolve(type, propertyValue);
+                }
                 propertyValues.add(propertyName, propertyValue);
             }else {
                 //处理Bean的依赖关系
@@ -136,6 +144,67 @@ public class XmlParser implements ResourceParser{
         this.document = document;
         return document;
     }
+
+    // TODO: 2016/7/9 简陋形式的类型转换 
+    private String changeType(String type)
+    {
+        switch (type)
+        {
+            case "int":
+                return "java.lang.Integer";
+            case "boolean":
+                return "java.lang.Boolean";
+            case "short":
+                return "java.lang.Short";
+            case "byte":
+                return "java.lang.Byte";
+            case "long":
+                return "java.lang.Long";
+            case "char":
+                return "java.lang.Character";
+            case "float":
+                return "java.lang.Float";
+            case "double":
+                return "java.lang.Double";
+            default:
+                // TODO: 2016/7/9 应该支持引用类型
+                throw new RuntimeException();
+        }
+    }
+
+    private <T> T resolve(String type, Object value)
+    {
+        try
+        {
+            System.out.println(type);
+            Class<?> c = Class.forName(type);
+            Constructor<T> con = (Constructor<T>) c.getConstructor(String.class);
+            return (T) con.newInstance(value);
+        }
+        catch (NoSuchMethodException e)
+        {
+            e.printStackTrace();
+        }
+        catch (ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IllegalAccessException e)
+        {
+            e.printStackTrace();
+        }
+        catch (InstantiationException e)
+        {
+            e.printStackTrace();
+        }
+        catch (InvocationTargetException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 
 
 
