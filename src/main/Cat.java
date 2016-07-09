@@ -5,11 +5,13 @@ package main;
  */
 public class Cat {
 
-    private String name;
+    public String name;
 
-    private String brand;
+    public String brand;
 
-    private Object friend;
+    public Object friend;
+
+    public Integer beautiful;
 
     @Override
     public String toString() {
@@ -17,6 +19,7 @@ public class Cat {
                 "name='" + name + '\'' +
                 ", brand='" + brand + '\'' +
                 ", friend=" + friend +
+                ", beautiful=" + beautiful +
                 '}';
     }
 }

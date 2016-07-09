@@ -5,10 +5,12 @@
         <property name="name" value="toma"></property>
         <property name="brand" value="aaa"></property>
         <property name="friend" ref="Dog"></property>
+        <property name="beautiful" value="11" type="int"></property>
     </bean>
 
     <bean id = "Dog" class = "main.Dog">
         <property name="name" value="eddie"></property>
+        <property name="friend" ref="Cat"></property>
     </bean>
 
 </beans>

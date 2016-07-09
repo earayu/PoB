@@ -34,8 +34,7 @@ public class XmlClassPathResourceTest
     }
 
     @Test
-    public void test2() throws NoSuchFieldException, IllegalAccessException, InstantiationException
-    {
+    public void test2() throws NoSuchFieldException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 
     }
 

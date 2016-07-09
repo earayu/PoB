@@ -7,6 +7,8 @@ public class Dog {
 
     public String name;
 
+    public Object friend;
+
     public String getName() {
         return name;
     }

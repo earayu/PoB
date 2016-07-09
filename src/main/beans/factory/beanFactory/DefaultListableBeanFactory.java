@@ -39,8 +39,8 @@ public class DefaultListableBeanFactory implements BeanFactory, BeanRegistry
 
     //这里的参数beanName对应的实际上是BeanDefinition中的BeanId
     public <T> T getBean(String beanId, Class<T> clazz) {
-
         BeanDefinition beanDefinition = beanDefinitionMap.get(beanId);
+
         Object bean = getBean(beanId);
 
         if(beanDefinition.getBeanClass()!=clazz)
@@ -63,7 +63,8 @@ public class DefaultListableBeanFactory implements BeanFactory, BeanRegistry
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-
+        //设置bean, 解决循环依赖问题
+        beanDefinition.setBean(bean);
         setProperties(bean, beanDefinition);
 
         return bean;
