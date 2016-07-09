@@ -17,6 +17,7 @@ public class XmlClassPathApplicationContext extends DefaultListableBeanFactory i
     {
         setXmlClassPathBeanDefinitionReader(location);
         registerAllBeanDefinitions(xmlClassPathBeanDefinitionReader.getBeanDefinitions());
+        initLazyInitTrueBeans();
     }
 
     private void setXmlClassPathBeanDefinitionReader(String location)
@@ -29,6 +30,17 @@ public class XmlClassPathApplicationContext extends DefaultListableBeanFactory i
         for(BeanDefinition beanDefinition:beanDefinitionSet)
         {
             registerBeanDefinitions(beanDefinition.getBeanId(), beanDefinition);
+        }
+    }
+
+    private void initLazyInitTrueBeans()
+    {
+        for(BeanDefinition beanDefinition:beanDefinitionMap.values())
+        {
+            if(beanDefinition.getLazyInit().equals("false"))
+            {
+                beanDefinition.setBean(createBean(beanDefinition));
+            }
         }
     }
 

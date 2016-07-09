@@ -1,6 +1,7 @@
 package main.beans.io;
 
 import main.Cat;
+import main.Dog;
 import main.beans.factory.applicationContext.ApplicationContext;
 import main.beans.factory.applicationContext.XmlClassPathApplicationContext;
 import main.beans.io.resource.Resource;

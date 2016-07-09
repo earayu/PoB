@@ -9,12 +9,14 @@ public class Cat {
 
     private String brand;
 
+    private Object friend;
+
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Cat{" +
                 "name='" + name + '\'' +
                 ", brand='" + brand + '\'' +
+                ", friend=" + friend +
                 '}';
     }
 }

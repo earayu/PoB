@@ -1,6 +1,7 @@
 package main.beans.factory.beanFactory;
 
 import main.beans.factory.beanDefinition.BeanDefinition;
+import main.beans.factory.beanDefinition.BeanReference;
 import main.beans.factory.beanRegistry.BeanRegistry;
 
 import java.lang.reflect.Field;
@@ -23,8 +24,8 @@ public class DefaultListableBeanFactory implements BeanFactory, BeanRegistry
     private static final String LAZY_INIT_FALSE = "false";
 
 
-    public Object getBean(String beanName) {
-        BeanDefinition beanDefinition = beanDefinitionMap.get(beanName);
+    public Object getBean(String beanId) {
+        BeanDefinition beanDefinition = beanDefinitionMap.get(beanId);
         checkNotNull(beanDefinition);
 
         Object bean = null;
@@ -49,16 +50,10 @@ public class DefaultListableBeanFactory implements BeanFactory, BeanRegistry
     }
 
     public void registerBeanDefinitions(String beanId, BeanDefinition beanDefinition) {
-        // TODO: 2016/7/8
-        if(beanDefinition.getLazyInit().equals(LAZY_INIT_TRUE))
-        {
-            beanDefinition.setBean(createBean(beanDefinition));
-        }
-
         beanDefinitionMap.put(beanId, beanDefinition);
     }
 
-    private Object createBean(BeanDefinition beanDefinition)
+    protected Object createBean(BeanDefinition beanDefinition)
     {
         Object bean;
         try {
@@ -87,6 +82,11 @@ public class DefaultListableBeanFactory implements BeanFactory, BeanRegistry
                 Object fieldValue = beanDefinition.getPropertyValues().getValue(fieldName);
                 try
                 {
+                    //处理bean的依赖
+                    if(fieldValue instanceof BeanReference)
+                    {
+                        fieldValue = getBean(BeanReference.class.cast(fieldValue).getBeanId());
+                    }
                     field.set(bean, fieldValue);
                 }
                 catch (IllegalAccessException e)

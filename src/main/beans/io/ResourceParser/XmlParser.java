@@ -2,6 +2,7 @@ package main.beans.io.ResourceParser;
 
 import main.beans.factory.beanDefinition.AbstractBeanDefinition;
 import main.beans.factory.beanDefinition.BeanDefinition;
+import main.beans.factory.beanDefinition.BeanReference;
 import main.beans.factory.beanDefinition.PropertyValues;
 import main.beans.io.resource.Resource;
 import org.dom4j.Document;
@@ -89,7 +90,16 @@ public class XmlParser implements ResourceParser{
         List<Element> properties = bean.elements("property");
         for(Element property:properties)
         {
-            propertyValues.add(property.attributeValue("name"), property.attributeValue("value"));
+            String propertyName = property.attributeValue("name");
+            Object propertyValue = property.attributeValue("value");
+            if(propertyValue!=null) {
+                //直接赋值, TODO: 2016/7/9 应该要处理不同类型的值
+                propertyValues.add(propertyName, propertyValue);
+            }else {
+                //处理Bean的依赖关系
+                BeanReference beanReference = new BeanReference(property.attributeValue("ref"));
+                propertyValues.add(propertyName, beanReference);
+            }
         }
         beanDefinition.setPropertyValues(propertyValues);
         return beanDefinition;

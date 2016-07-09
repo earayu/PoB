@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <beans>
 
-    <bean id="Cat" class="main.Cat" scope="singleton" lazy-init="true">
+    <bean id="Cat" class="main.Cat" scope="singleton" lazy-init="false">
         <property name="name" value="toma"></property>
         <property name="brand" value="aaa"></property>
+        <property name="friend" ref="Dog"></property>
     </bean>
 
     <bean id = "Dog" class = "main.Dog">
-        <property name="name" value="dog"></property>
+        <property name="name" value="eddie"></property>
     </bean>
 
 </beans>
